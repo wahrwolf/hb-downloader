@@ -8,5 +8,5 @@ setup(
     license='MIT',
     author='Brian Schkerke',
     author_email='bmschkerke@gmail.com',
-    description='Automated download tool for Humble Bundle purchases.'
+    description='Automated download tool for Humble Bundle purchases.', requires=['requests']
 )

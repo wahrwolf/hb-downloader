@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import logging
 import sys
 from Events import Events
 import humblebundle

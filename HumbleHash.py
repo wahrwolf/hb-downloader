@@ -57,6 +57,12 @@ class HumbleHash(object):
 
     @staticmethod
     def remove_md5file(full_filename):
+        """
+            Removes an MD5 file from storage.
+
+            :param full_filename:  The full path and filename of the file to remove the MD5 checksum for.
+            :return:  None
+        """
         md5full_filename = HumbleHash.md5filename(full_filename)
 
         if os.path.exists(md5full_filename):
@@ -81,17 +87,23 @@ class HumbleHash(object):
                     md5line = line
                     break
 
-        f.close()
-
-        if md5line is None:
+        if md5line is None or len(md5line) == 0:
             return ""
         else:
             return md5line[0:32]
 
     @staticmethod
     def write_md5(full_filename, md5_hash):
+        """
+            Writes an MD5 file for a given filename.  If md5_hash is not provided the hash
+            will be calculated prior to write.
+
+            :param full_filename:  The full path and filename of the file to create an MD5 file for.
+            :param md5_hash:  The MD5 hash value of the given file, if known.
+            :return:  None
+        """
         if not configuration.write_md5:
-            return ""
+            return
 
         md5full_filename = HumbleHash.md5filename(full_filename)
         local_filename = os.path.basename(md5full_filename)
@@ -105,9 +117,18 @@ class HumbleHash(object):
         with open(md5full_filename, "wb") as f:
             f.write(md5_hash + " *%s" % local_filename)
 
-        f.close()
 
     @staticmethod
     def md5filename(full_filename):
+        """
+            Calculates and returns the MD5 filename for a given file.
+
+            :param full_filename:  The full path and filename of the file to calculate the MD5 location for.
+            :return: A string representing the MD5 filename for the given file.
+            :raise ValueError:  If full_filename is not specified upon function execution.
+        """
+        if full_filename is None or len(full_filename) == 0:
+            raise ValueError("full_filename must be specified in call to md5filename.")
+
         full_filename += ".md5"
         return full_filename

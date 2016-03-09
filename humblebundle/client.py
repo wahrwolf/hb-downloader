@@ -36,6 +36,9 @@ class HumbleApi(object):
             If we get a HumbleAuthenticationException then we need to log in to the system again.
             Otherwise we're good to go.
 
+            We can't just check for the cookie existence.  The session ID might've been
+            invalidated server side.
+
             :return: True if the _simpleauth_sess cookie has been set, False if not.
         """
         try:
