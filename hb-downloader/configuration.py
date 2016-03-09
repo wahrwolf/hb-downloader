@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-import os
-import sys
+import yaml
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
@@ -79,40 +78,34 @@ default_headers = {
 default_params = {"ajax": "true"}
 
 
-def convert_to_bool(user_input, default_value=False):
-    if len(user_input) == 0:
-        return default_value
+def load_configuration(config_file):
+    with open(config_file, "r") as f:
+        saved_config = yaml.safe_load(f)
 
-    user_input = user_input[0].upper()
+    global download_platforms
+    global default_headers
+    global write_md5
+    global read_md5
+    global force_md5
+    global debug
+    global download_location
+    global cookie_filename
+    global username
+    global password
+    global chunk_size
+    global default_params
 
-    if user_input == 'Y' or user_input == 'T':
-        return True
+    download_platforms = saved_config.get("download-platforms", download_platforms)
+    default_headers = saved_config.get("default-headers", default_headers)
+    write_md5 = saved_config.get("write_md5", write_md5)
+    read_md5 = saved_config.get("read_md5", read_md5)
+    force_md5 = saved_config.get("force_md5", force_md5)
+    debug = saved_config.get("debug", debug)
+    download_location = saved_config.get("download-location", download_location)
+    cookie_filename = saved_config("cookie-filename", cookie_filename)
+    username = saved_config("username", username)
+    password = saved_config("password", password)
+    chunk_size = saved_config("chunksize", chunk_size)
+    default_params = saved_config("default-params", default_params)
 
-    if user_input == 'N' or user_input == 'F':
-        return False
-
-    return default_value
-
-input_download_location = raw_input("Enter the location to download files: ")
-if not os.path.exists(input_download_location):
-    print "Download location doesn't exist.  It will be created at runtime as needed if not created."
-    create_download_location = raw_input("Do you want me to create it now? [Y/n]")
-    if convert_to_bool(create_download_location, True):
-        try:
-            os.makedirs(create_download_location)
-        except OSError as ose:
-            print "There was an error while creating the specified download location."
-            print ose.message
-            sys.exit(os.EX_OSFILE)
-
-
-print "\nThe following information will be stored in plain text in your configuration file."
-print "It is required for the script to execute; this notice is for full disclosure only."
-
-print "Your Humble Bundle username is generally an email address."
-input_username = raw_input("Enter your username: ")
-input_password = raw_input("Enter your password: ")
-
-print "\nYour Authy token will be prompted for upon the first execution of the script."
-print "After the first execution the _simpleauth_sess cookie should be sufficient for authorization."
 
