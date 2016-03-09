@@ -1,0 +1,29 @@
+download-location: /mnt/Storage/HumbleBundle/Games/
+cookie-filename: cookies.txt
+username: <username for humblebundle.com>
+password: <password for humblebundle.com>
+chunk-size: 8192000
+force_md5: False
+write_md5: True
+read_md5: True
+debug: True
+
+default_headers:
+  Accept: application/json
+  Accept-Charset: utf-8
+  Keep-Alive: True
+  X-Requested-By: hb_android_app
+  User-Agent: Apache-HttpClient/UNAVAILABLE (java 1.4)
+
+default_params:
+  ajax: True
+
+download-platforms:
+  audio: True,
+  ebook: True,
+  windows: True,
+  mac: True,
+  linux: True,
+  android: True,
+  asmjs: False
+
