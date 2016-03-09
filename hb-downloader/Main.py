@@ -44,6 +44,8 @@ print "This downloader includes MIT licensed code from Joel Pedraza."
 print "https://github.com/saik0/humblebundle-python"
 print ""
 
+configuration.load_configuration("hb-downloader-settings.yaml")
+
 game_keys = hapi.get_gamekeys()
 print "%s orders found." % (len(game_keys))
 

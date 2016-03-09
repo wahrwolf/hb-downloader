@@ -102,10 +102,10 @@ def load_configuration(config_file):
     force_md5 = saved_config.get("force_md5", force_md5)
     debug = saved_config.get("debug", debug)
     download_location = saved_config.get("download-location", download_location)
-    cookie_filename = saved_config("cookie-filename", cookie_filename)
-    username = saved_config("username", username)
-    password = saved_config("password", password)
-    chunk_size = saved_config("chunksize", chunk_size)
-    default_params = saved_config("default-params", default_params)
+    cookie_filename = saved_config.get("cookie-filename", cookie_filename)
+    username = saved_config.get("username", username)
+    password = saved_config.get("password", password)
+    chunk_size = saved_config.get("chunksize", chunk_size)
+    default_params = saved_config.get("default-params", default_params)
 
 
