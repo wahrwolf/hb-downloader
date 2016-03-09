@@ -1,9 +1,11 @@
 from distutils.core import setup
 
+import configuration
+
 setup(
     name='hb-downloader',
-    version='0.10',
-    packages=['requests'],
+    version=configuration.VERSION,
+    packages=['hb-downloader'],
     url='https://github.com/talonius/hb-downloader',
     license='MIT',
     author='Brian Schkerke',
