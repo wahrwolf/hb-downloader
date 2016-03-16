@@ -1,4 +1,4 @@
-download-location: /mnt/Storage/HumbleBundle/Games/
+# download-location: /mnt/Storage/HumbleBundle/Games/
 cookie-filename: cookies.txt
 username: <username for humblebundle.com>
 password: <password for humblebundle.com>
