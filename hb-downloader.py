@@ -3,9 +3,9 @@ import logger
 from config_data import ConfigData
 from configuration import Configuration
 from event_handler import EventHandler
-from humble_api.exceptions import HumbleCredentialException
-from humble_api.exceptions import HumbleDownloadNeededException
 from humble_api.humble_api import HumbleApi
+from humble_api.exceptions.humble_credential_exception import HumbleCredentialException
+from humble_api.exceptions.humble_download_needed_exception import HumbleDownloadNeededException
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
@@ -81,3 +81,6 @@ for v in game_keys:
                     logger.display_message(True, "Download",
                                            "Skipping %s/%s because it has no downloads." %
                                            (d.machine_name, d.platform))
+
+logger.display_message(False, "Processing", "Finished.")
+exit()

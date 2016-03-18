@@ -29,8 +29,7 @@ and configure the libraries for you.
 
 ## Installation
 There are five pieces of critical information required by the script.  Four (username, password, download
-location, and cookie location) of these pieces of information are configured in the hb-downloader-settings.yaml file.  
-The fifth (Authy token) is entered once as needed for authentication during the login process.
+location, and cookie location) of these pieces of information are configured in the hb-downloader-settings.yaml file.  The fifth (Authy token) is entered once as needed for authentication during the login process.
 
 hb-downloader-settings.yaml is the configuration file for the script.  It contains all of the information that
  can be overridden during script execution.  The format (for the data we're concerned with) is 
