@@ -1,4 +1,5 @@
 import sys
+import logger
 from humble_api.events import Events
 
 __author__ = "Brian Schkerke"
@@ -17,7 +18,7 @@ class EventHandler(object):
 
     @staticmethod
     def print_md5_start(filename):
-        sys.stdout.write("[     MD5] %s: " % filename)
+        logger.display_message(False, "Checksum", "%s: " % filename, False)
 
     @staticmethod
     def print_md5_end(filename):
@@ -25,7 +26,7 @@ class EventHandler(object):
 
     @staticmethod
     def print_download_start(filename):
-        sys.stdout.write("[Download] %s: " % filename)
+        logger.display_message(False, "Download", "%s: " % filename, False)
 
     @staticmethod
     def print_download_end(filename):

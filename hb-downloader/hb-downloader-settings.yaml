@@ -2,6 +2,7 @@
 cookie-filename: cookies.txt
 username: <username for humblebundle.com>
 password: <password for humblebundle.com>
+download-location: \\megatron\mila\Games\Humble Bundle\
 chunk-size: 8192000
 force_md5: False
 write_md5: True
@@ -19,11 +20,11 @@ default_params:
   ajax: True
 
 download-platforms:
-  audio: True,
-  ebook: True,
-  windows: True,
-  mac: True,
-  linux: True,
-  android: True,
+  audio: True
+  ebook: True
+  windows: True
+  mac: True
+  linux: True
+  android: True
   asmjs: False
 
