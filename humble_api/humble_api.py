@@ -59,7 +59,12 @@ class HumbleApi(object):
             exist.
         """
         self.session = requests.Session()
-        self.session.cookies = cookielib.LWPCookieJar(cookie_location)
+        try:
+            self.session.cookies = cookielib.LWPCookieJar(cookie_location)
+        except IOError:
+            # Cookie file doesn't exist.
+            pass
+
         self.session.cookies.load()
         self.session.headers.update(self.default_headers)
         self.session.params.update(self.default_params)
