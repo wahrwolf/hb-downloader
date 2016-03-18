@@ -1,9 +1,11 @@
-import os
-import yaml
 import argparse
+import os
+
+import yaml
+
+import logger
 from config_data import ConfigData
 from humble_api.humble_hash import HumbleHash
-import logger
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
