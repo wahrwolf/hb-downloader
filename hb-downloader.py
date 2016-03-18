@@ -35,7 +35,7 @@ EventHandler.initialize()
 hapi = HumbleApi(ConfigData.cookie_filename)
 
 if not hapi.check_login():
-    Configuration.authy_token = raw_input("Enter your Authy token: ")
+    ConfigData.authy_token = raw_input("Enter your Authy token: ")
     try:
         hapi.login(ConfigData.username, ConfigData.password, ConfigData.authy_token)
     except HumbleCredentialException as hce:

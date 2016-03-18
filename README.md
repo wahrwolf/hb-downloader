@@ -54,3 +54,12 @@ The sessions are occasionally invalidated by humblebundle.com so keep an eye out
 
 ## Issues
 If you encounter any issues or have suggestions (including constructive criticism of my disastrous Python) please let me know at bmschkerke@gmail.com.
+
+## Known Issues
+If you run the script in a terminal window under Windows you may receive:
+
+     UnicodeEncodeError: 'charmap' codec can't encode character...
+     
+This only happens if you have an extended character in the name of one of your products.  The easiest fix is to export an environment variable so that Python knows the terminal can accept Unicode:
+
+    set PYTHONIOENCODING=UTF-8

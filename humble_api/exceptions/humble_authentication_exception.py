@@ -20,7 +20,7 @@ class HumbleAuthenticationException(HumbleResponseException):
             :param list args: (optional) Extra positional args to pass to the request.
             :param dict kwargs: (optional) Extra keyword args to pass to the request.
         """
-        super(HumbleAuthenticationException, self).__init__(*args, **kwargs)
-
         self.captcha_required = kwargs.pop("captcha_required", None)
         self.authy_required = kwargs.pop("authy_required", None)
+
+        super(HumbleAuthenticationException, self).__init__(*args, **kwargs)
