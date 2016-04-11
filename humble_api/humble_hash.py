@@ -2,7 +2,6 @@ from __future__ import division
 import hashlib
 import os
 from events import Events
-from config_data import ConfigData
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"

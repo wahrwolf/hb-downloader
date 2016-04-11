@@ -242,7 +242,7 @@ class HumbleApi(object):
 
         read_bytes = 0
         current_percentage = 0
-        Events.trigger(Events.EVENT_DOWNLOAD_START, full_filename)
+        Events.trigger(Events.EVENT_DOWNLOAD_START, ds.filename)
 
         # TODO:  Handle when BT links exist but no web DL exists.
         r = requests.get(ds.download_web, stream=True)
@@ -258,7 +258,7 @@ class HumbleApi(object):
                     f.write(chunk)
                     f.flush()
 
-        Events.trigger(Events.EVENT_DOWNLOAD_END, full_filename)
+        Events.trigger(Events.EVENT_DOWNLOAD_END, ds.filename)
 
     def is_downloaded(self, download_location, sp, d, ds):
         """
@@ -281,18 +281,18 @@ class HumbleApi(object):
         # If the file doesn't exist then we obviously don't have a match.
         # This is ignoring the whole possibility that the mount location may be invalid.
         if not os.path.exists(full_filename):
-            raise HumbleDownloadNeededException("Target %s doesn't exist." % full_filename)
+            raise HumbleDownloadNeededException("Target %s doesn't exist." % ds.filename)
 
         # File size doesn't match?  No need to MD5 it.
         actual_file_size = os.path.getsize(full_filename)
         if actual_file_size != ds.file_size:
             raise HumbleDownloadNeededException(
                 "%s file sizes don't match (expected %d actual %d)." %
-                (full_filename, ds.file_size or 0, actual_file_size or 0))
+                (ds.filename, ds.file_size or 0, actual_file_size or 0))
 
         if not HumbleHash.verify_checksum(full_filename, ds.md5):
             raise HumbleDownloadNeededException(
-                "MD5 of %s doesn't match (expected %s)." % (full_filename, ds.md5))
+                "MD5 of %s doesn't match (expected %s)." % (ds.filename, ds.md5))
 
         return True
 
@@ -300,7 +300,7 @@ class HumbleApi(object):
         """
             Checks a response for the common authentication errors.  Sometimes a successful API call won't have a
              success property.  We do a check for this property and return true if found, otherwise we parse for
-             errors.
+s             errors.
 
             :param response:  The response received from humblebundle.com. A pass through variable used to initialize
              the exceptions.

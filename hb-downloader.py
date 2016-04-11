@@ -6,6 +6,7 @@ from event_handler import EventHandler
 from humble_api.humble_api import HumbleApi
 from humble_api.exceptions.humble_credential_exception import HumbleCredentialException
 from humble_api.exceptions.humble_download_needed_exception import HumbleDownloadNeededException
+from progress_tracker import ProgressTracker
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
@@ -45,18 +46,36 @@ if not hapi.check_login():
 game_keys = hapi.get_gamekeys()
 logger.display_message(False, "Processing", "%s orders found." % (len(game_keys)))
 
+for cv in game_keys:
+    ProgressTracker.order_count_total = len(game_keys)
+    co = hapi.get_order(cv)
+
+    if co.subproducts is not None:
+        ProgressTracker.subproduct_count_total += len(co.subproducts)
+
+        for csp in co.subproducts:
+            if csp.downloads is not None:
+                ProgressTracker.download_count_total += len(csp.downloads)
+
+                for cd in csp.downloads:
+                    if cd.download_structs is not None:
+                        for cds in cd.download_structs:
+                            if cds.file_size is not None:
+                                ProgressTracker.download_size_total += cds.file_size
+
 for v in game_keys:
     order = hapi.get_order(v)
-    logger.display_message(True, "Processing", "Processing product: %s" % order.product.human_name)
-
-    num_sub_products = 0
-    if order.subproducts is not None:
-        logger.display_message(True, "Processing", "%s subproducts found." % (len(order.subproducts)))
+    ProgressTracker.order_count_current += 1
+    ProgressTracker.current_product = order.product.human_name
 
     for sp in order.subproducts or []:
-        logger.display_message(True, "Processing", "Current subproduct: %s" % sp.human_name)
+        ProgressTracker.subproduct_count_current += 1
+        ProgressTracker.current_subproduct = sp.human_name
 
         for d in sp.downloads or []:
+            ProgressTracker.download_count_current += 1
+            ProgressTracker.current_download = d.machine_name
+            ProgressTracker.display_summary()
             download_count = 0
 
             if not ConfigData.download_platforms.get(d.platform, False):
@@ -74,13 +93,17 @@ for v in game_keys:
                                                    % (ds.filename, ds.human_size))
 
                 except HumbleDownloadNeededException as hdne:
-                    logger.display_message(False, "Download", "%s:  Downloading %s." % (hdne.message, ds.human_size))
+                    logger.display_message(False, "Download", "%s" % (hdne.message))
+                    logger.display_message(False, "Download", "Downloading %s." % (ds.human_size))
                     hapi.download_file(ConfigData.download_location, sp, d, ds)
 
                 if download_count == 0:
                     logger.display_message(True, "Download",
                                            "Skipping %s/%s because it has no downloads." %
                                            (d.machine_name, d.platform))
+
+                if ds.file_size is not None:
+                    ProgressTracker.download_size_current += ds.file_size
 
 logger.display_message(False, "Processing", "Finished.")
 exit()

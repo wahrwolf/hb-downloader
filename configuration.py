@@ -1,8 +1,6 @@
 import argparse
 import os
-
 import yaml
-
 import logger
 from config_data import ConfigData
 from humble_api.humble_hash import HumbleHash

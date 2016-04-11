@@ -1,5 +1,4 @@
 import sys
-
 import logger
 from humble_api.events import Events
 
@@ -20,6 +19,7 @@ class EventHandler(object):
     @staticmethod
     def print_md5_start(filename):
         logger.display_message(False, "Checksum", "%s: " % filename, False)
+        sys.stdout.flush()
 
     @staticmethod
     def print_md5_end(filename):
@@ -28,6 +28,7 @@ class EventHandler(object):
     @staticmethod
     def print_download_start(filename):
         logger.display_message(False, "Download", "%s: " % filename, False)
+        sys.stdout.flush()
 
     @staticmethod
     def print_download_end(filename):
@@ -36,3 +37,4 @@ class EventHandler(object):
     @staticmethod
     def print_progress(percentage):
         sys.stdout.write("{0:.0f}% ".format(percentage))
+        sys.stdout.flush()

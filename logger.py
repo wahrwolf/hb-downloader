@@ -7,7 +7,7 @@ __copyright__ = "Copyright 2016 Brian Schkerke"
 __license__ = "MIT"
 
 
-def display_message(is_debug, category, user_message, add_crlf = True):
+def display_message(is_debug, category, user_message, add_crlf=True):
     """
         Centralized function for dumping data to the console.
 
