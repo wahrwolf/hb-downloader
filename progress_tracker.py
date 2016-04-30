@@ -6,14 +6,8 @@ __license__ = "MIT"
 
 
 class ProgressTracker(object):
-    order_count_current = 0
-    order_count_total = 0
-
-    subproduct_count_current = 0
-    subproduct_count_total = 0
-
-    download_count_current = 0
-    download_count_total = 0
+    item_count_current = 0
+    item_count_total = 0
 
     download_size_current = 0
     download_size_total = 0
@@ -23,21 +17,32 @@ class ProgressTracker(object):
     current_download = ""
 
     @staticmethod
+    def assign_download(hd):
+        ProgressTracker.current_product = hd.product_name
+        ProgressTracker.current_subproduct = hd.subproduct_name
+        ProgressTracker.current_download = hd.machine_name
+
+    @staticmethod
     def display_summary():
-        progress_message = "O: %d/%d SP: %d/%d D: %d/%d DL: %s/%s (%s)" % (ProgressTracker.order_count_current,
-            ProgressTracker.order_count_total, ProgressTracker.subproduct_count_current,
-            ProgressTracker.subproduct_count_total, ProgressTracker.download_count_current,
-            ProgressTracker.download_count_total,
+        progress_message = "%d/%d DL: %s/%s (%s)" % (ProgressTracker.item_count_current,
+            ProgressTracker.item_count_total,
             ProgressTracker.format_filesize(ProgressTracker.download_size_current),
             ProgressTracker.format_filesize(ProgressTracker.download_size_total),
             ProgressTracker.format_percentage(ProgressTracker.download_size_current,
                                               ProgressTracker.download_size_total))
 
         logger.display_message(False, "Progress", progress_message)
-        logger.display_message(True, "Progress", "Product: %s" % ProgressTracker.current_product)
-        logger.display_message(True, "Progress", "Subproduct: %s" % ProgressTracker.current_subproduct)
-        logger.display_message(True, "Progress", "Download: %s" % ProgressTracker.current_download)
+        logger.display_message(True, "Progress", "%s: %s: %s" % (ProgressTracker.current_product, ProgressTracker.current_subproduct, ProgressTracker.current_download))
 
+    @staticmethod
+    def reset():
+        ProgressTracker.item_count_total = 0
+        ProgressTracker.item_count_current = 0
+        ProgressTracker.download_size_current = 0
+        ProgressTracker.download_size_total = 0
+        ProgressTracker.current_product = ""
+        ProgressTracker.current_subproduct = ""
+        ProgressTracker.current_download = ""
 
     @staticmethod
     def format_filesize(filesize):
@@ -52,4 +57,7 @@ class ProgressTracker(object):
 
     @staticmethod
     def format_percentage(current, total):
-        return '{percent:.2%}'.format(percent=(1.0 * current)/total)
+        if total == 0:
+            return "0.00%"
+        else:
+            return '{percent:.2%}'.format(percent=(1.0 * current)/total)

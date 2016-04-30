@@ -4,7 +4,9 @@ __license__ = "MIT"
 
 
 class BaseModel(object):
-    """ Represents the base object used by all of the Humble Bundle objects. """
+    """
+        Represents the base object used by all of the Humble Bundle objects.
+    """
 
     def __init__(self, data):
         """

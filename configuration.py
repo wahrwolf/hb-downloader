@@ -54,6 +54,8 @@ class Configuration(object):
         ConfigData.cookie_filename = saved_config.get("cookie-filename", ConfigData.cookie_filename)
         ConfigData.username = saved_config.get("username", ConfigData.username)
         ConfigData.password = saved_config.get("password", ConfigData.password)
+        ConfigData.resume_downloads = saved_config.get("resume_downloads", ConfigData.resume_downloads)
+        ConfigData.ignore_md5 = saved_config.get("ignore_md5", ConfigData.ignore_md5)
 
     @staticmethod
     def parse_command_line():
@@ -108,10 +110,12 @@ class Configuration(object):
         logger.display_message(True, "Config", "write_md5=%s" % ConfigData.write_md5)
         logger.display_message(True, "Config", "read_md5=%s" % ConfigData.read_md5)
         logger.display_message(True, "Config", "force_md5=%s" % ConfigData.force_md5)
+        logger.display_message(True, "Config", "ignore_md5=%s" % ConfigData.ignore_md5)
         logger.display_message(True, "Config", "debug=%s" % ConfigData.debug)
         logger.display_message(True, "Config", "download_location=%s" % ConfigData.download_location)
         logger.display_message(True, "Config", "cookie_filename=%s" % ConfigData.cookie_filename)
         logger.display_message(True, "Config", "chunksize=%s" % ConfigData.chunk_size)
+        logger.display_message(True, "Config", "resume_downloads=%s" % ConfigData.resume_downloads)
 
         for platform in ConfigData.download_platforms.keys():
             logger.display_message(True, "Config", "Platform %s=%s" %

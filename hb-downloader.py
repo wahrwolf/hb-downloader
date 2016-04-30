@@ -5,7 +5,7 @@ from configuration import Configuration
 from event_handler import EventHandler
 from humble_api.humble_api import HumbleApi
 from humble_api.exceptions.humble_credential_exception import HumbleCredentialException
-from humble_api.exceptions.humble_download_needed_exception import HumbleDownloadNeededException
+from humble_download import HumbleDownload
 from progress_tracker import ProgressTracker
 
 __author__ = "Brian Schkerke"
@@ -43,67 +43,66 @@ if not hapi.check_login():
         logger.display_message(False, "Login", "Failed to login.  %s" % hce.message)
         exit("Login to humblebundle.com failed.  Please verify credentials and token.")
 
+logger.display_message(False, "Processing", "Downloading order list.")
 game_keys = hapi.get_gamekeys()
 logger.display_message(False, "Processing", "%s orders found." % (len(game_keys)))
+humble_downloads = list()
+
+# Create initial list of Humble Downloads.  Filter out platforms which are turned off here.
+ProgressTracker.reset()
+ProgressTracker.item_count_total = len(game_keys)
 
 for cv in game_keys:
-    ProgressTracker.order_count_total = len(game_keys)
+    ProgressTracker.item_count_current += 1
+    logger.display_message(False, "Processing", "Retrieving order details for order %s (%d/%d)." %
+                           (cv, ProgressTracker.item_count_current, ProgressTracker.item_count_total))
     co = hapi.get_order(cv)
 
-    if co.subproducts is not None:
-        ProgressTracker.subproduct_count_total += len(co.subproducts)
-
-        for csp in co.subproducts:
-            if csp.downloads is not None:
-                ProgressTracker.download_count_total += len(csp.downloads)
-
-                for cd in csp.downloads:
-                    if cd.download_structs is not None:
-                        for cds in cd.download_structs:
-                            if cds.file_size is not None:
-                                ProgressTracker.download_size_total += cds.file_size
-
-for v in game_keys:
-    order = hapi.get_order(v)
-    ProgressTracker.order_count_current += 1
-    ProgressTracker.current_product = order.product.human_name
-
-    for sp in order.subproducts or []:
-        ProgressTracker.subproduct_count_current += 1
-        ProgressTracker.current_subproduct = sp.human_name
-
-        for d in sp.downloads or []:
-            ProgressTracker.download_count_current += 1
-            ProgressTracker.current_download = d.machine_name
-            ProgressTracker.display_summary()
-            download_count = 0
-
-            if not ConfigData.download_platforms.get(d.platform, False):
-                logger.display_message(False, "Download",
-                                       "Skipping %s/%s because platform is not selected for download." %
-                                       (d.machine_name, d.platform))
+    for csp in co.subproducts or []:
+        for cd in csp.downloads or []:
+            if not ConfigData.download_platforms.get(cd.platform, False):
                 continue
 
-            for ds in d.download_structs:
-                try:
-                    if not len(ds.filename) == 0:
-                        download_count += 1
-                        if hapi.is_downloaded(ConfigData.download_location, sp, d, ds):
-                            logger.display_message(True, "Download", "%s (%s) already downloaded."
-                                                   % (ds.filename, ds.human_size))
+            for cds in cd.download_structs:
+                humble_downloads.append(HumbleDownload(cd, cds, co, csp, cv))
 
-                except HumbleDownloadNeededException as hdne:
-                    logger.display_message(False, "Download", "%s" % (hdne.message))
-                    logger.display_message(False, "Download", "Downloading %s." % (ds.human_size))
-                    hapi.download_file(ConfigData.download_location, sp, d, ds)
+ProgressTracker.reset()
+ProgressTracker.item_count_total = len(humble_downloads)
+humble_downloads_required = list()
 
-                if download_count == 0:
-                    logger.display_message(True, "Download",
-                                           "Skipping %s/%s because it has no downloads." %
-                                           (d.machine_name, d.platform))
+for hd in humble_downloads:
+    ProgressTracker.item_count_current += 1
+    ProgressTracker.assign_download(hd)
+    ProgressTracker.display_summary()
 
-                if ds.file_size is not None:
-                    ProgressTracker.download_size_current += ds.file_size
+    # logger.display_message(True, "Debug", "HD: %s" % hd.status())
+
+    if hd.is_valid():
+        if hd.check_status():
+            logger.display_message(True, "Download", "%s (%s) already downloaded." %
+                                   (hd.filename, hd.humble_file_size_human))
+        else:
+            logger.display_message(True, "Download", "%s" % hd.status_message)
+            logger.display_message(True, "Download", "%s added to download queue." % hd.filename)
+            humble_downloads_required.append(hd)
+
+ProgressTracker.reset()
+ProgressTracker.item_count_total = len(humble_downloads_required)
+
+for hd in humble_downloads_required:
+    ProgressTracker.download_size_total += hd.humble_file_size
+
+for hd in humble_downloads_required:
+    ProgressTracker.assign_download(hd)
+    ProgressTracker.display_summary()
+    logger.display_message(False, "Download", hd.status_message)
+    logger.display_message(False, "Download", "Downloading %s." % hd.humble_file_size_human)
+    hd.download_file()
+
+    if hd.humble_file_size is not None:
+        ProgressTracker.download_size_current += hd.humble_file_size
+
+    ProgressTracker.item_count_current += 1
 
 logger.display_message(False, "Processing", "Finished.")
 exit()

@@ -9,11 +9,6 @@ class Payee(BaseModel):
     """
         Represents the recipient of funds for a given application.
 
-        Example Data:
-            "payee": {"human_name": "O'Reilly", "machine_name": "oreilly"}
-            "payee": {"human_name": "Pasta Games", "machine_name": "pastagames"}
-            "payee": {"human_name": "Humble Bundle, Inc", "machine_name": "humblebundle"}
-
         human_name:  The human readable name of the payee.
         machine_name:  The name of the payee usable on a PC.
     """

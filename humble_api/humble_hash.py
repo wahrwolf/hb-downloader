@@ -57,6 +57,26 @@ class HumbleHash(object):
             return md5_hash.hexdigest()
 
     @staticmethod
+    def checksum(full_filename):
+        """
+            Retrieves or calculates the checksum for the given filename.  First checks for the
+            existence of an MD5 file and reads the MD5 value from it, if possible.  Otherwise it
+            calculates the checksum of the given file and returns the value.
+
+            :param full_filename: The full path and filename of the file to calculate and compare the MD5 hash for.
+            :return: The MD5 checksum of the provided path and filename as a string.
+            :rtype: string
+        """
+        if full_filename is None or not os.path.exists(full_filename):
+            return ""
+
+        stored_checksum = HumbleHash.read_md5file(full_filename)
+        if len(stored_checksum) == 0:
+            stored_checksum = HumbleHash.calculate_checksum(full_filename)
+
+        return stored_checksum
+
+    @staticmethod
     def verify_checksum(full_filename, checksum):
         """
             Compares the checksum for the given filename against the given checksum.  First checks for the
@@ -68,14 +88,8 @@ class HumbleHash(object):
             :return: True if the MD5 hash of the given file matches the provided md5_hash.
             :rtype: bool
         """
-        if full_filename is None or not os.path.exists(full_filename):
-            return False
-
-        stored_checksum = HumbleHash.read_md5file(full_filename)
-        if len(stored_checksum) == 0:
-            stored_checksum = HumbleHash.calculate_checksum(full_filename)
-
-        return stored_checksum == checksum
+        stored_checksum = HumbleHash.checksum(full_filename)
+        return stored_checksum == checksum, stored_checksum
 
     @staticmethod
     def remove_md5file(full_filename):

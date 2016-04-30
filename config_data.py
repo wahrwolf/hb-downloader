@@ -4,7 +4,7 @@ __license__ = "MIT"
 
 
 class ConfigData(object):
-    VERSION = 0.40
+    VERSION = 0.41
     username = ""
     password = ""
     authy_token = ""
@@ -15,6 +15,8 @@ class ConfigData(object):
     read_md5 = True
     force_md5 = False
     chunk_size = 8192000
+    ignore_md5 = False
+    resume_downloads = True
 
     download_platforms = {
         'audio': True,
