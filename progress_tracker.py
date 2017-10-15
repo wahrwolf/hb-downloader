@@ -53,7 +53,12 @@ class ProgressTracker(object):
             index_level += 1
             filesize /= 1024
 
-        return "%d%s" % (filesize, prefixes[index_level])
+        try:
+            size = "%d%s" % (filesize, prefixes[index_level])
+        except:
+            size = "unknown"
+            pass
+        return size
 
     @staticmethod
     def format_percentage(current, total):
