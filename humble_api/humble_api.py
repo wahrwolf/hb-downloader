@@ -28,7 +28,7 @@ class HumbleApi(object):
     """
 
     # URLs.
-    LOGIN_URL = "https://www.humblebundle.com/login"
+    LOGIN_URL = "https://www.humblebundle.com/processlogin"
     ORDER_LIST_URL = "https://www.humblebundle.com/api/v1/user/order"
     ORDER_URL = "https://www.humblebundle.com/api/v1/order/{order_id}"
 
@@ -44,7 +44,7 @@ class HumbleApi(object):
     # default_params specifies the default querystring parameters added to each request sent to humblebundle.com.
     default_params = {"ajax": "true"}
 
-    def __init__(self, cookie_location="cookie.txt"):
+    def __init__(self, cookie_location="cookie.txt", auth_sess_cookie=""):
         """
             Base constructor.  Responsible for setting up the requests object and cookie jar.
             All configuration values should be set prior to constructing an object of this
@@ -54,6 +54,10 @@ class HumbleApi(object):
         self.session = requests.Session()
         self.session.cookies = http.cookiejar.LWPCookieJar(cookie_location)
 
+        if auth_sess_cookie != "":
+            auth_sess_cookie = bytes(auth_sess_cookie, "utf-8").decode("unicode_escape")
+            cookie = http.cookiejar.Cookie(0, "_simpleauth_sess", auth_sess_cookie, None, None, "www.humblebundle.com", None, None, "/", None, True, None, False, None, None, None)
+            self.session.cookies.set_cookie(cookie)
         try:
             self.session.cookies.load()
         except IOError:

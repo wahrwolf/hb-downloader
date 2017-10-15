@@ -50,6 +50,8 @@ cookie-location is where you want your session cookies stored after successful a
     
 Once hb-downloader-settings.yaml has been setup you'll need to execute hb-downloader.py at least once prior to any automation.  The script will detect that you need to login and prompt you for your Authy token.  Once you've successfully authenticated, the _session_auth cookie will be stored in the file specified by the cookie filename and you won't have to enter any credentials.  (And, if you're the paranoid sort, you can remove your credentials from the hb-downloader-settings.yaml file.)
 
+Alternatively, you can directly enter the value of the _simple_auth cookie from your browser in the yaml configuration file, or pass it trough the command line.
+
 The sessions are occasionally invalidated by humblebundle.com so keep an eye out if executions begin to fail.
 
 ## Issues

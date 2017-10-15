@@ -33,7 +33,7 @@ if not validation_status:
 # Initialize the event handlers.
 EventHandler.initialize()
 
-hapi = HumbleApi(ConfigData.cookie_filename)
+hapi = HumbleApi(ConfigData.cookie_filename, ConfigData.auth_sess_cookie)
 
 if not hapi.check_login():
     ConfigData.authy_token = input("Enter your Authy token: ")

@@ -52,6 +52,7 @@ class Configuration(object):
         ConfigData.debug = saved_config.get("debug", ConfigData.debug)
         ConfigData.download_location = saved_config.get("download-location", ConfigData.download_location)
         ConfigData.cookie_filename = saved_config.get("cookie-filename", ConfigData.cookie_filename)
+        ConfigData.auth_sess_cookie = saved_config.get("session-cookie", ConfigData.auth_sess_cookie)
         ConfigData.username = saved_config.get("username", ConfigData.username)
         ConfigData.password = saved_config.get("password", ConfigData.password)
         ConfigData.resume_downloads = saved_config.get("resume_downloads", ConfigData.resume_downloads)
@@ -84,6 +85,9 @@ class Configuration(object):
         parser.add_argument("-cs", "--chunksize", nargs="?",
                             default=ConfigData.chunk_size,
                             help="The size to use when calculating MD5s and downloading files.", type=int)
+        parser.add_argument("-c", "--auth_cookie", nargs="?",
+                            default=ConfigData.auth_sess_cookie,
+                            help="The _simple_auth cookie value from a web browser", type=str)
 
         args = parser.parse_args()
 
@@ -94,6 +98,9 @@ class Configuration(object):
         ConfigData.cookie_filename = args.cookie_filename
         ConfigData.download_location = args.download_location
         ConfigData.chunk_size = args.chunksize
+        ConfigData.auth_sess_cookie = args.auth_cookie
+
+        print("auth cookie:")
 
     @staticmethod
     def dump_configuration():

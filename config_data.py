@@ -11,6 +11,7 @@ class ConfigData(object):
     download_location = ""
     debug = True
     cookie_filename = "cookies.txt"
+    auth_sess_cookie = ""
     write_md5 = True
     read_md5 = True
     force_md5 = False
