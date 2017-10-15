@@ -162,7 +162,7 @@ class HumbleHash(object):
             checksum = HumbleHash.calculate_checksum(full_filename)
 
         with open(md5full_filename, "wb") as f:
-            f.write(checksum + " *%s" % local_filename)
+            f.write((checksum + " *%s" % local_filename).encode())
 
     @staticmethod
     def md5filename(full_filename):
