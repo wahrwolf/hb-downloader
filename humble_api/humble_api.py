@@ -1,14 +1,14 @@
-from __future__ import division
-import cookielib
+
+import http.cookiejar
 import itertools
-from model.order import Order
+from .model.order import Order
 import requests
-from exceptions.humble_response_exception import HumbleResponseException
-from exceptions.humble_authentication_exception import HumbleAuthenticationException
-from exceptions.humble_captcha_exception import HumbleCaptchaException
-from exceptions.humble_credential_exception import HumbleCredentialException
-from exceptions.humble_two_factor_exception import HumbleTwoFactorException
-from exceptions.humble_parse_exception import HumbleParseException
+from .exceptions.humble_response_exception import HumbleResponseException
+from .exceptions.humble_authentication_exception import HumbleAuthenticationException
+from .exceptions.humble_captcha_exception import HumbleCaptchaException
+from .exceptions.humble_credential_exception import HumbleCredentialException
+from .exceptions.humble_two_factor_exception import HumbleTwoFactorException
+from .exceptions.humble_parse_exception import HumbleParseException
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"
@@ -52,7 +52,7 @@ class HumbleApi(object):
             exist.
         """
         self.session = requests.Session()
-        self.session.cookies = cookielib.LWPCookieJar(cookie_location)
+        self.session.cookies = http.cookiejar.LWPCookieJar(cookie_location)
 
         try:
             self.session.cookies.load()
@@ -109,7 +109,7 @@ class HumbleApi(object):
             "authy-token": authy_token
         }
 
-        kwargs.setdefault("data", {}).update({k: v for k, v in default_data.items() if v is not None})
+        kwargs.setdefault("data", {}).update({k: v for k, v in list(default_data.items()) if v is not None})
 
         response = self._request("POST", self.LOGIN_URL, *args, **kwargs)
         data = self.__parse_data(response)
@@ -262,6 +262,6 @@ s             errors.
             :return:  A tuple containing the errors and error message.
         """
         errors = data.get("errors", None)
-        error_msg = ", ".join(itertools.chain.from_iterable(v for k, v in errors.items())) \
+        error_msg = ", ".join(itertools.chain.from_iterable(v for k, v in list(errors.items()))) \
             if errors else "Unspecified error"
         return errors, error_msg

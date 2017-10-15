@@ -1,7 +1,7 @@
-from base_model import BaseModel
-from subscription import Subscription
-from subproduct import Subproduct
-from product import Product
+from .base_model import BaseModel
+from .subscription import Subscription
+from .subproduct import Subproduct
+from .product import Product
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"

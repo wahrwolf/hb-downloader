@@ -1,6 +1,6 @@
-from base_model import BaseModel
-from payee import Payee
-from download import Download
+from .base_model import BaseModel
+from .payee import Payee
+from .download import Download
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"

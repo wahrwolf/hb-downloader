@@ -1,5 +1,5 @@
-from base_model import BaseModel
-from urlparse import urlparse
+from .base_model import BaseModel
+from urllib.parse import urlparse
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"

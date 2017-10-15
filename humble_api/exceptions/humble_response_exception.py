@@ -1,5 +1,5 @@
 import requests
-from humble_exception import HumbleException
+from .humble_exception import HumbleException
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"

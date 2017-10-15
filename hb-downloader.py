@@ -13,11 +13,11 @@ __copyright__ = "Copyright 2016 Brian Schkerke"
 __license__ = "MIT"
 
 
-print "The Clown's Humble Bundle Downloader v%.2f" % ConfigData.VERSION
-print ""
-print "This downloader includes MIT licensed code from Joel Pedraza."
-print "https://github.com/saik0/humblebundle-python"
-print ""
+print("The Clown's Humble Bundle Downloader v%.2f" % ConfigData.VERSION)
+print("")
+print("This downloader includes MIT licensed code from Joel Pedraza.")
+print("https://github.com/saik0/humblebundle-python")
+print("")
 
 # Load the configuration from the YAML file...
 Configuration.load_configuration("hb-downloader-settings.yaml")
@@ -36,7 +36,7 @@ EventHandler.initialize()
 hapi = HumbleApi(ConfigData.cookie_filename)
 
 if not hapi.check_login():
-    ConfigData.authy_token = raw_input("Enter your Authy token: ")
+    ConfigData.authy_token = input("Enter your Authy token: ")
     try:
         hapi.login(ConfigData.username, ConfigData.password, ConfigData.authy_token)
     except HumbleCredentialException as hce:

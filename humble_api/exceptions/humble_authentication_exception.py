@@ -1,4 +1,4 @@
-from humble_response_exception import HumbleResponseException
+from .humble_response_exception import HumbleResponseException
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"

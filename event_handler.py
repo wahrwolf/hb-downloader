@@ -23,7 +23,7 @@ class EventHandler(object):
 
     @staticmethod
     def print_md5_end(filename):
-        print ""
+        print("")
 
     @staticmethod
     def print_download_start(filename):
@@ -32,7 +32,7 @@ class EventHandler(object):
 
     @staticmethod
     def print_download_end(filename):
-        print ""
+        print("")
 
     @staticmethod
     def print_progress(percentage):

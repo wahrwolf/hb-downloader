@@ -18,8 +18,8 @@ def display_message(is_debug, category, user_message, add_crlf=True):
         :return:  None
     """
     assert isinstance(is_debug, bool)
-    assert isinstance(category, basestring)
-    assert isinstance(user_message, basestring)
+    assert isinstance(category, str)
+    assert isinstance(user_message, str)
 
     category_width = 10
 
@@ -27,6 +27,6 @@ def display_message(is_debug, category, user_message, add_crlf=True):
         formatted_message = "[%s] [%s] %s" % (time.strftime("%Y/%m/%d %I:%M:%S"),
                                               category.rjust(category_width), user_message)
         if add_crlf:
-            print formatted_message
+            print(formatted_message)
         else:
             sys.stdout.write(formatted_message)

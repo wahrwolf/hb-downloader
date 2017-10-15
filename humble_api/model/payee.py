@@ -1,4 +1,4 @@
-from base_model import BaseModel
+from .base_model import BaseModel
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"

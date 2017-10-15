@@ -1,7 +1,7 @@
-from __future__ import division
+
 import hashlib
 import os
-from events import Events
+from .events import Events
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"

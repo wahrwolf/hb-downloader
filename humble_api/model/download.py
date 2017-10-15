@@ -1,5 +1,5 @@
-from base_model import BaseModel
-from download_struct import DownloadStruct
+from .base_model import BaseModel
+from .download_struct import DownloadStruct
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"

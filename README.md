@@ -6,12 +6,12 @@ An automated utility to download your Humble Bundle purchases with support for t
 This package is not endorsed, supported, or affiliated with Humble Bundle, Inc.
 
 ## Requirements
-* Python 2.7
+* Python 3.6
 * requests library
 * pyyaml library
 
 ## Python Installation
-Several features particular to Python v2.7 were used during the development of this script.  To install Python v2.7 visit https://www.python.org/downloads/ and grab the latest 2.x.x release.
+Several features particular to Python v3.6 might have been used during the development of this script.  To install Python v3.6 visit https://www.python.org/downloads/ and grab the latest 3.x.x release.
 
 ## Getting the Prerequisites
 From a command prompt, enter:

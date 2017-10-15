@@ -1,4 +1,4 @@
-from humble_authentication_exception import HumbleAuthenticationException
+from .humble_authentication_exception import HumbleAuthenticationException
 
 __author__ = "Joel Pedraza"
 __copyright__ = "Copyright 2014, Joel Pedraza"

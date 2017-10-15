@@ -29,7 +29,7 @@ class Configuration(object):
             return False, "The username for humblebundle.com has not been set."
 
         if len(ConfigData.password) == 0:
-            print False, "The password for humblebundle.com has not been set."
+            print(False, "The password for humblebundle.com has not been set.")
 
         return True, ""
 
@@ -83,7 +83,7 @@ class Configuration(object):
                             help="Password for logging into humblebundle.com.", type=str)
         parser.add_argument("-cs", "--chunksize", nargs="?",
                             default=ConfigData.chunk_size,
-                            help="The size to use when calculating MD5s and downloading files.", type=long)
+                            help="The size to use when calculating MD5s and downloading files.", type=int)
 
         args = parser.parse_args()
 
@@ -117,7 +117,7 @@ class Configuration(object):
         logger.display_message(True, "Config", "chunksize=%s" % ConfigData.chunk_size)
         logger.display_message(True, "Config", "resume_downloads=%s" % ConfigData.resume_downloads)
 
-        for platform in ConfigData.download_platforms.keys():
+        for platform in list(ConfigData.download_platforms.keys()):
             logger.display_message(True, "Config", "Platform %s=%s" %
                                    (platform, ConfigData.download_platforms[platform]))
 

@@ -1,4 +1,4 @@
-from __future__ import division
+
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
