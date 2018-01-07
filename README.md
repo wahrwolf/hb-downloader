@@ -23,7 +23,7 @@ You'll either be informed that the requirement is already satisfied, or pip will
 
 ## Getting the Installation Files
 * Download the zip file from the releases page and unzip it to the directory of your choice.
-* Check out the source with Git:  git clone git://github.com/talonius/hb-downloader.git
+* Check out the source with Git:  git clone git://github.com/MayeulC/hb-downloader.git
 
 ## Installation
 There are five pieces of critical information required by the script.  Four (username, password, download location, and cookie location) of these pieces of information are configured in the hb-downloader-settings.yaml file.  The fifth (Authy token) is entered once as needed for authentication during the login process.
