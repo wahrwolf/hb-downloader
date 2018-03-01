@@ -49,7 +49,7 @@ class ProgressTracker(object):
         prefixes = ['B', 'Kb', 'Mb', 'Gb', 'Tb']
         index_level = 0
 
-        while abs(filesize / 1024) > 0:
+        while abs(filesize / 1024) > 1:
             index_level += 1
             filesize /= 1024
 
