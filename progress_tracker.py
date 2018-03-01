@@ -46,10 +46,10 @@ class ProgressTracker(object):
 
     @staticmethod
     def format_filesize(filesize):
-        prefixes = ['B', 'Kb', 'Mb', 'Gb', 'Tb']
+        prefixes = ['B', 'KiB', 'MiB', 'GiB', 'TiB']
         index_level = 0
 
-        while abs(filesize / 1024) > 1:
+        while abs(filesize / 1024) > 1 and index_level < len(prefixes) - 1:
             index_level += 1
             filesize /= 1024
 
