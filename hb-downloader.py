@@ -46,63 +46,48 @@ if not hapi.check_login():
 logger.display_message(False, "Processing", "Downloading order list.")
 game_keys = hapi.get_gamekeys()
 logger.display_message(False, "Processing", "%s orders found." % (len(game_keys)))
-humble_downloads = list()
 
 # Create initial list of Humble Downloads.  Filter out platforms which are turned off here.
 ProgressTracker.reset()
 ProgressTracker.item_count_total = len(game_keys)
+download_size_total = 0
+item_count_total = 0
+key_downloads = dict()
 
-for cv in game_keys:
+for key in game_keys:
     ProgressTracker.item_count_current += 1
-    logger.display_message(False, "Processing", "Retrieving order details for order %s (%d/%d)." %
-                           (cv, ProgressTracker.item_count_current, ProgressTracker.item_count_total))
-    co = hapi.get_order(cv)
+    logger.display_message(False, "Processing",
+                           "Retrieving order details for order %s (%d/%d)." %
+                           (key, ProgressTracker.item_count_current,
+                            ProgressTracker.item_count_total))
 
-    for csp in co.subproducts or []:
-        for cd in csp.downloads or []:
-            if not ConfigData.download_platforms.get(cd.platform, False):
-                continue
+    humble_downloads = HumbleDownload.needed_downloads_from_key(hapi, key)
+    item_count_total += len(humble_downloads)
+    download_size_total += sum(dl.humble_file_size for dl in humble_downloads)
+    logger.display_message(False, "Processing",
+                           "Added %d downloads for order %s"
+                           % (len(humble_downloads), key))
 
-            for cds in cd.download_structs:
-                humble_downloads.append(HumbleDownload(cd, cds, co, csp, cv))
+    if len(humble_downloads) > 0:
+        key_downloads[key] = humble_downloads
 
 ProgressTracker.reset()
-ProgressTracker.item_count_total = len(humble_downloads)
-humble_downloads_required = list()
+ProgressTracker.item_count_total = item_count_total
+ProgressTracker.download_size_total = download_size_total
 
-for hd in humble_downloads:
-    ProgressTracker.item_count_current += 1
-    ProgressTracker.assign_download(hd)
-    ProgressTracker.display_summary()
+for key in key_downloads:
+    HumbleDownload.update_download_list_url(hapi, key_downloads.get(key))
+    for hd in key_downloads.get(key):
+        ProgressTracker.assign_download(hd)
+        ProgressTracker.display_summary()
+        logger.display_message(False, "Download", hd.status_message)
+        logger.display_message(False, "Download",
+                               "Downloading %s." % hd.humble_file_size_human)
+        hd.download_file()
 
-    # logger.display_message(True, "Debug", "HD: %s" % hd.status())
-
-    if hd.is_valid():
-        if hd.check_status():
-            logger.display_message(True, "Download", "%s (%s) already downloaded." %
-                                   (hd.filename, hd.humble_file_size_human))
-        else:
-            logger.display_message(True, "Download", "%s" % hd.status_message)
-            logger.display_message(True, "Download", "%s added to download queue." % hd.filename)
-            humble_downloads_required.append(hd)
-
-ProgressTracker.reset()
-ProgressTracker.item_count_total = len(humble_downloads_required)
-
-for hd in humble_downloads_required:
-    ProgressTracker.download_size_total += hd.humble_file_size
-
-for hd in humble_downloads_required:
-    ProgressTracker.assign_download(hd)
-    ProgressTracker.display_summary()
-    logger.display_message(False, "Download", hd.status_message)
-    logger.display_message(False, "Download", "Downloading %s." % hd.humble_file_size_human)
-    hd.download_file()
-
-    if hd.humble_file_size is not None:
-        ProgressTracker.download_size_current += hd.humble_file_size
-
-    ProgressTracker.item_count_current += 1
+        if hd.humble_file_size is not None:
+            ProgressTracker.download_size_current += hd.humble_file_size
+        ProgressTracker.item_count_current += 1
 
 logger.display_message(False, "Processing", "Finished.")
 exit()

@@ -216,3 +216,45 @@ class HumbleDownload(object):
         object_dump += "partial_download: %s\n" % self.partial_download
 
         return object_dump.encode("utf-8")
+
+    @staticmethod
+    def update_download_list_url(hapi, hd_list):
+        """Updates the download urls from a list"""
+        keys = set(hd.order_number for hd in hd_list)
+        for key in keys:  # Group by key to limit the number of requests
+            updated_hd_list = HumbleDownload.downloads_from_key(hapi, key)
+            # Iterate over HumbleDownload objects that have the same key
+            for hd in [hd_k for hd_k in hd_list if hd_k.order_number == key]:
+                # Update the urls of products based on their md5
+                hd.download_url = [nhd.download_url for nhd in updated_hd_list
+                                   if nhd.humble_md5 == hd.humble_md5][0]
+
+    @staticmethod
+    def downloads_from_key(hapi, key):
+        """Returns a list of HumbleDownload objetcts from a key string"""
+        humble_downloads = []
+        current_order = hapi.get_order(key)
+        for current_subproduct in current_order.subproducts or []:
+            for current_download in current_subproduct.downloads or []:
+                if not ConfigData.download_platforms.get(
+                        current_download.platform, False):
+                    continue
+                for current_dl_struct in current_download.download_structs:
+                    hd = HumbleDownload(current_download,
+                                        current_dl_struct,
+                                        current_order,
+                                        current_subproduct,
+                                        key)
+                    if hd.is_valid():
+                        humble_downloads.append(hd)
+        return humble_downloads
+
+    @staticmethod
+    def needed_downloads_from_key(hapi, key):
+        """Returns a list of HumbleDownload objetcts corresponding to items
+        that have not been already downloaded, from a key string"""
+        humble_downloads = []
+        for download in HumbleDownload.downloads_from_key(hapi, key):
+            if not download.check_status():  # If not already downloaded
+                humble_downloads.append(download)
+        return humble_downloads
