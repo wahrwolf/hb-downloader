@@ -89,6 +89,25 @@ class Configuration(object):
                             default=ConfigData.auth_sess_cookie,
                             help="The _simple_auth cookie value from a web browser", type=str)
 
+        sub = parser.add_subparsers(title="action", dest="action")
+
+        list_items = sub.add_parser("list", help="display library items")
+        list_items.add_argument("-e", "--exclude", action="store_true",
+                                help="Invert the selection by excluding the following specifiers")
+        item_type = list_items.add_subparsers(title="type", dest="type")
+        item_type.add_parser("games").add_argument("--platform", nargs='+',
+                            choices=["linux", "mac", "windows", "android",
+                                     "browser"]) # TODO: NATIVE?
+        item_type.add_parser("ebooks").add_argument("--format", nargs='+',
+                            choices=["cbz", "pdf", "epub", "pdf_hq"])
+        item_type.add_parser("music")
+
+        item_type.add_parser("purchases").add_argument(
+                "--type", choices=["bundle", "store"])
+        # TODO: add product keys
+
+        d_list = sub.add_parser("download", help="download specific library items")
+
         args = parser.parse_args()
 
         ConfigData.debug = args.debug
