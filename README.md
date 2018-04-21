@@ -26,7 +26,16 @@ You'll either be informed that the requirement is already satisfied, or pip will
 * Check out the source with Git:  `git clone git://github.com/MayeulC/hb-downloader.git`
 
 ## Installation
-There are five pieces of critical information required by the script.  Four (username, password, download location, and cookie location) of these pieces of information are configured in the `hb-downloader-settings.yaml` file.  The fifth (Authy token) is entered once as needed for authentication during the login process.
+Firstly, clone the repository or download it as a zip and extract it. You then
+need to fetch your authentication cookie from humblebundle.com.  To do so,
+navigate there, log in and press F12 to open the developper tools of your
+browser. Navigate to the cookies tab, and look for a cookie named
+`_simple_auth` (on the humblebundle.com domain). Copy the value inside the
+`hb-downloader-settings.yaml` file, or specify it on the command line with the
+"-c" flag. Pay attention that every character is correctly escaped according to
+the method you choose.
+
+Alternatively, there are five pieces of critical information required by the script.  Four (username, password, download location, and cookie location) of these pieces of information are configured in the `hb-downloader-settings.yaml` file.  The fifth (Authy token) is entered once as needed for authentication during the login process.
 
 `hb-downloader-settings.yaml` is the configuration file for the script.  It contains all of the information that can be overridden during script execution.  The format (for the data we're concerned with) is 
  
@@ -49,10 +58,6 @@ cookie-location is where you want your session cookies stored after successful a
     cookie-location: cookies.txt
     
 Once hb-downloader-settings.yaml has been setup you'll need to execute hb-downloader.py at least once prior to any automation.  The script will detect that you need to login and prompt you for your Authy token.  Once you've successfully authenticated, the `_session_auth` cookie will be stored in the file specified by the cookie filename and you won't have to enter any credentials.  (And, if you're the paranoid sort, you can remove your credentials from the `hb-downloader-settings.yaml` file.)
-
-Alternatively, you can directly enter the value of the `_simple_auth` cookie from your browser in the yaml configuration file, or pass it trough the command line.
-
-The sessions are occasionally invalidated by humblebundle.com so keep an eye out if executions begin to fail.
 
 ## Issues
 If you encounter any issues or have suggestions, please [open an issue](https://github.com/MayeulC/hb-downloader/issues) on GitHub.
