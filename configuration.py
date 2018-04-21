@@ -72,25 +72,21 @@ class Configuration(object):
         """
         parser = argparse.ArgumentParser()
 
-        parser.add_argument("-d", "--debug", nargs="?",
+        parser.add_argument("-d", "--debug", action="store_true",
                             default=ConfigData.debug,
-                            help="Toggles debug mode.", type=bool)
-        parser.add_argument("-dl", "--download_location", nargs="?",
+                            help="Activates debug mode.")
+        parser.add_argument("-dl", "--download_location",
                             default=ConfigData.download_location,
                             help="Location to store downloaded files.", type=str)
-        parser.add_argument("-cf", "--cookie_filename", nargs="?",
-                            default=ConfigData.cookie_filename,
+        parser.add_argument("-cf", "--cookie_filename", default=ConfigData.cookie_filename,
                             help="Location to store the cookie file.", type=str)
-        parser.add_argument("-u", "--username", nargs="?",
-                            default=ConfigData.username,
+        parser.add_argument("-u", "--username", default=ConfigData.username,
                             help="Username for logging into humblebundle.com.", type=str)
-        parser.add_argument("-p", "--password", nargs="?",
-                            default=ConfigData.password,
+        parser.add_argument("-p", "--password", default=ConfigData.password,
                             help="Password for logging into humblebundle.com.", type=str)
-        parser.add_argument("-cs", "--chunksize", nargs="?",
-                            default=ConfigData.chunk_size,
+        parser.add_argument("-cs", "--chunksize", default=ConfigData.chunk_size,
                             help="The size to use when calculating MD5s and downloading files.", type=int)
-        parser.add_argument("-c", "--auth_cookie", nargs="?",
+        parser.add_argument("-c", "--auth_cookie",
                             default=ConfigData.auth_sess_cookie,
                             help="The _simple_auth cookie value from a web browser", type=str)
 
