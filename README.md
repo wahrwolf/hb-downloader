@@ -5,6 +5,17 @@ An automated utility to download your Humble Bundle purchases with support for t
 
 This package is not endorsed, supported, or affiliated with Humble Bundle, Inc.
 
+It is distributed under the MIT license, you may use, modify and redistribute
+it freely provided you agree with the terms of that license, that can be found
+online or under the accompanying LICENSE file.
+
+This is a fork with additionnal functionnality and fixes of the software
+originally distributed by Brian Schkerke and available at
+https://github.com/talonius/hb-downloader
+
+This repository contains code from Joel Pedraza's awesome humblebundle-python
+library, available at https://github.com/saik0/humblebundle-python
+
 ## Requirements
 * Python 3.6
 * requests library
