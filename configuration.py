@@ -11,6 +11,11 @@ __license__ = "MIT"
 
 
 class Configuration(object):
+    cmdline_platform = {  # Mapping between hb convention and ours
+            'games': ['android', 'asmjs', 'linux', 'mac', 'windows'],
+            'ebooks': 'ebook',
+            'audio': 'audio'}
+
     @staticmethod
     def validate_configuration():
         """
@@ -89,26 +94,35 @@ class Configuration(object):
                             default=ConfigData.auth_sess_cookie,
                             help="The _simple_auth cookie value from a web browser", type=str)
 
-        sub = parser.add_subparsers(title="action", dest="action")
+        sub = parser.add_subparsers(
+                title="action", dest="action",
+                help=("Action to perform, optionally restricted to a few "
+                      "specifiers. If no action is specified, the tool "
+                      "defaults to downloading according to the configuration "
+                      "file."))
 
-        list_items = sub.add_parser("list", help="display library items")
-        list_items.add_argument("-e", "--exclude", action="store_true",
-                                help="Invert the selection by excluding the following specifiers")
-        item_type = list_items.add_subparsers(title="type", dest="type")
-        item_type.add_parser("games").add_argument("--platform", nargs='+',
-                            choices=["linux", "mac", "windows", "android",
-                                     "browser"]) # TODO: NATIVE?
-        item_type.add_parser("ebooks").add_argument("--format", nargs='+',
-                            choices=["cbz", "pdf", "epub", "pdf_hq"])
-        item_type.add_parser("music")
+        a_list = sub.add_parser("list", help=(
+                "Display library items in a tab-separated tree-like structure "
+                "that can be parsed as a CSV"))
+        a_download = sub.add_parser(
+                "download", help="download specific items from the library")
 
-        item_type.add_parser("purchases").add_argument(
-                "--type", choices=["bundle", "store"])
-        # TODO: add product keys
+        for action in [a_list, a_download]:
+            item_type = action.add_subparsers(title="type", dest="item_type")
+            games = item_type.add_parser("games")
+            games.add_argument(
+                    "--platform", nargs='+', choices=[  # TODO: add NATIVE?
+                            "linux", "mac", "windows", "android", "asmjs"])
+            item_type.add_parser("ebooks")
+            item_type.add_parser("audio")
 
-        d_list = sub.add_parser("download", help="download specific library items")
-
+        a_list.add_argument(
+                "-u", "--print-url", action="store_true", dest="print_url",
+                help=("Print the download url with the output. Please note "
+                      "that the url expires after a while"))
         args = parser.parse_args()
+
+        Configuration.configure_action(args)
 
         ConfigData.debug = args.debug
 
@@ -119,7 +133,29 @@ class Configuration(object):
         ConfigData.chunk_size = args.chunksize
         ConfigData.auth_sess_cookie = args.auth_cookie
 
-        print("auth cookie:")
+    @staticmethod
+    def configure_action(args):
+        if "platform" not in dir(args):
+            args.platform = None
+        if "print_url" not in dir(args):
+            args.print_url = False
+
+        if args.platform is None:
+            args.platform = Configuration.cmdline_platform.get(args.item_type)
+
+        if args.action is not None:
+            for platform in ConfigData.download_platforms:
+                if args.platform is None:
+                    ConfigData.download_platforms[platform] = True
+                    continue
+                if platform in args.platform:
+                    ConfigData.download_platforms[platform] = True
+                else:
+                    ConfigData.download_platforms[platform] = False
+        else:
+            args.action = "download"
+        ConfigData.action = args.action
+        ConfigData.print_url = args.print_url
 
     @staticmethod
     def dump_configuration():

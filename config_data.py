@@ -5,6 +5,8 @@ __license__ = "MIT"
 
 class ConfigData(object):
     VERSION = 0.41
+    action = ""
+    print_url = False
     username = ""
     password = ""
     authy_token = ""
