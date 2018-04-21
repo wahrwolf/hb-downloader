@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from .base_model import BaseModel
 from .payee import Payee
 from .download import Download

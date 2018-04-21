@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from .humble_response_exception import HumbleResponseException
 
 __author__ = "Joel Pedraza"
