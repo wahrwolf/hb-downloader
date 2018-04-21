@@ -30,12 +30,6 @@ class Configuration(object):
         if not os.access(ConfigData.download_location, os.W_OK | os.X_OK):
             return False, "Download location is not writable by the current user."
 
-        if len(ConfigData.username) == 0:
-            return False, "The username for humblebundle.com has not been set."
-
-        if len(ConfigData.password) == 0:
-            print(False, "The password for humblebundle.com has not been set.")
-
         return True, ""
 
     @staticmethod
@@ -58,8 +52,6 @@ class Configuration(object):
         ConfigData.download_location = saved_config.get("download-location", ConfigData.download_location)
         ConfigData.cookie_filename = saved_config.get("cookie-filename", ConfigData.cookie_filename)
         ConfigData.auth_sess_cookie = saved_config.get("session-cookie", ConfigData.auth_sess_cookie)
-        ConfigData.username = saved_config.get("username", ConfigData.username)
-        ConfigData.password = saved_config.get("password", ConfigData.password)
         ConfigData.resume_downloads = saved_config.get("resume_downloads", ConfigData.resume_downloads)
         ConfigData.ignore_md5 = saved_config.get("ignore_md5", ConfigData.ignore_md5)
 
@@ -80,10 +72,6 @@ class Configuration(object):
                             help="Location to store downloaded files.", type=str)
         parser.add_argument("-cf", "--cookie_filename", default=ConfigData.cookie_filename,
                             help="Location to store the cookie file.", type=str)
-        parser.add_argument("-u", "--username", default=ConfigData.username,
-                            help="Username for logging into humblebundle.com.", type=str)
-        parser.add_argument("-p", "--password", default=ConfigData.password,
-                            help="Password for logging into humblebundle.com.", type=str)
         parser.add_argument("-cs", "--chunksize", default=ConfigData.chunk_size,
                             help="The size to use when calculating MD5s and downloading files.", type=int)
         parser.add_argument("-c", "--auth_cookie",
@@ -122,8 +110,6 @@ class Configuration(object):
 
         ConfigData.debug = args.debug
 
-        ConfigData.username = args.username
-        ConfigData.password = args.password
         ConfigData.cookie_filename = args.cookie_filename
         ConfigData.download_location = args.download_location
         ConfigData.chunk_size = args.chunksize
@@ -156,9 +142,8 @@ class Configuration(object):
     @staticmethod
     def dump_configuration():
         """
-            Dumps the current configuration to the log.  Username and password are not dumped to
-            allow logs or output to be posted without fear of personal information.
-
+            Dumps the current configuration to the log when debug mode is
+            activated
             :return: None
         """
         # Shortcut the process if debugging is not turned on.

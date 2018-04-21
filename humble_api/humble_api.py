@@ -4,10 +4,6 @@ import itertools
 from .model.order import Order
 import requests
 from .exceptions.humble_response_exception import HumbleResponseException
-from .exceptions.humble_authentication_exception import HumbleAuthenticationException
-from .exceptions.humble_captcha_exception import HumbleCaptchaException
-from .exceptions.humble_credential_exception import HumbleCredentialException
-from .exceptions.humble_two_factor_exception import HumbleTwoFactorException
 from .exceptions.humble_parse_exception import HumbleParseException
 
 __author__ = "Joel Pedraza"
@@ -86,66 +82,6 @@ class HumbleApi(object):
                 return False
         except HumbleAuthenticationException:
             return False
-
-    def login(self, username, password, authy_token, *args, **kwargs):
-        """
-            Login to the Humble Bundle API.
-
-            The response sets the _simpleauth_sess cookie which is stored in the session
-            automatically.
-
-            :param str username:  The username to use when logging into humblebundle.com.
-            :param str password:  The password to use when logging into humblebundle.com.
-            :param str authy_token:  The Authy token to use when logging into humblebundle.com.
-            :param list args: (optional) Extra positional args to pass to the request
-            :param dict kwargs: (optional) Extra keyword args to pass to the request. If a data dict is supplied a key
-                                collision with any of the above params will resolved in favor of the supplied param
-            :raises RequestException: if the connection failed
-            :raises HumbleResponseException: if the response was invalid
-            :raises HumbleCredentialException: if the username and password did not match
-            :raises HumbleCaptchaException: if the captcha challenge failed
-            :raises HumbleTwoFactorException: if the two-factor authentication challenge failed
-            :raises HumbleAuthenticationException: if some other authentication error occurred
-        """
-        default_data = {
-            "username": username,
-            "password": password,
-            "authy-token": authy_token
-        }
-
-        kwargs.setdefault("data", {}).update({k: v for k, v in list(default_data.items()) if v is not None})
-
-        response = self._request("POST", self.LOGIN_URL, *args, **kwargs)
-        data = self.__parse_data(response)
-        success = data.get("success", None)
-
-        if success is True:
-            self.session.cookies.save()
-            return True
-
-        authy_required = data.get("authy_required")
-        errors, error_msg = self.__get_errors(data)
-        request = response.request
-
-        if errors:
-            captcha = errors.get("captcha")
-            username = errors.get("username")
-            authy_token = errors.get("authy-token")
-
-            if captcha:
-                raise HumbleCaptchaException(
-                    error_msg, request=request, response=response, authy_required=authy_required)
-
-            if username:
-                raise HumbleCredentialException(
-                    error_msg, request=request, response=response, authy_required=authy_required)
-
-            if authy_token:
-                raise HumbleTwoFactorException(
-                    error_msg, request=request, response=response, authy_required=authy_required)
-
-        raise HumbleAuthenticationException(
-            error_msg, request=request, response=response, uthy_required=authy_required)
 
     def get_gamekeys(self, *args, **kwargs):
         """

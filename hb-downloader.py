@@ -4,7 +4,6 @@ from config_data import ConfigData
 from configuration import Configuration
 from event_handler import EventHandler
 from humble_api.humble_api import HumbleApi
-from humble_api.exceptions.humble_credential_exception import HumbleCredentialException
 from actions import Action
 
 __author__ = "Brian Schkerke"
@@ -35,12 +34,8 @@ EventHandler.initialize()
 hapi = HumbleApi(ConfigData.cookie_filename, ConfigData.auth_sess_cookie)
 
 if not hapi.check_login():
-    ConfigData.authy_token = input("Enter your Authy token: ")
-    try:
-        hapi.login(ConfigData.username, ConfigData.password, ConfigData.authy_token)
-    except HumbleCredentialException as hce:
-        logger.display_message(False, "Login", "Failed to login.  %s" % hce.message)
-        exit("Login to humblebundle.com failed.  Please verify credentials and token.")
+        exit("Login to humblebundle.com failed."
+             "  Please verify your authentication cookie")
 
 logger.display_message(False, "Processing", "Downloading order list.")
 game_keys = hapi.get_gamekeys()

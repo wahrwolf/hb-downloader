@@ -7,9 +7,6 @@ class ConfigData(object):
     VERSION = 0.41
     action = ""
     print_url = False
-    username = ""
-    password = ""
-    authy_token = ""
     download_location = ""
     debug = True
     cookie_filename = "cookies.txt"
