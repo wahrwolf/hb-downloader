@@ -32,7 +32,7 @@ if not validation_status:
 # Initialize the event handlers.
 EventHandler.initialize()
 
-hapi = HumbleApi(ConfigData.cookie_filename, ConfigData.auth_sess_cookie)
+hapi = HumbleApi(ConfigData.auth_sess_cookie)
 
 if not hapi.check_login():
         exit("Login to humblebundle.com failed."

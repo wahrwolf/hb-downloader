@@ -52,7 +52,6 @@ class Configuration(object):
         ConfigData.chunk_size = saved_config.get("chunksize", ConfigData.chunk_size)
         ConfigData.debug = saved_config.get("debug", ConfigData.debug)
         ConfigData.download_location = saved_config.get("download-location", ConfigData.download_location)
-        ConfigData.cookie_filename = saved_config.get("cookie-filename", ConfigData.cookie_filename)
         ConfigData.auth_sess_cookie = saved_config.get("session-cookie", ConfigData.auth_sess_cookie)
         ConfigData.resume_downloads = saved_config.get("resume_downloads", ConfigData.resume_downloads)
         ConfigData.ignore_md5 = saved_config.get("ignore_md5", ConfigData.ignore_md5)
@@ -70,10 +69,8 @@ class Configuration(object):
                             default=ConfigData.debug,
                             help="Activates debug mode.")
         parser.add_argument("-dl", "--download_location",
-                            default=ConfigData.download_location,
-                            help="Location to store downloaded files.", type=str)
-        parser.add_argument("-cf", "--cookie_filename", default=ConfigData.cookie_filename,
-                            help="Location to store the cookie file.", type=str)
+                            default=ConfigData.download_location, type=str,
+                            help="Location to store downloaded files.")
         parser.add_argument("-cs", "--chunksize", default=ConfigData.chunk_size,
                             help="The size to use when calculating MD5s and downloading files.", type=int)
         parser.add_argument("-c", "--auth_cookie",
@@ -112,7 +109,6 @@ class Configuration(object):
 
         ConfigData.debug = args.debug
 
-        ConfigData.cookie_filename = args.cookie_filename
         ConfigData.download_location = args.download_location
         ConfigData.chunk_size = args.chunksize
         ConfigData.auth_sess_cookie = args.auth_cookie
@@ -158,7 +154,6 @@ class Configuration(object):
         logger.display_message(True, "Config", "ignore_md5=%s" % ConfigData.ignore_md5)
         logger.display_message(True, "Config", "debug=%s" % ConfigData.debug)
         logger.display_message(True, "Config", "download_location=%s" % ConfigData.download_location)
-        logger.display_message(True, "Config", "cookie_filename=%s" % ConfigData.cookie_filename)
         logger.display_message(True, "Config", "chunksize=%s" % ConfigData.chunk_size)
         logger.display_message(True, "Config", "resume_downloads=%s" % ConfigData.resume_downloads)
 

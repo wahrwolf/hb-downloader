@@ -38,28 +38,26 @@ class HumbleApi(object):
         "User-Agent": "Apache-HttpClient/UNAVAILABLE (java 1.4)"
     }
 
-    # default_params specifies the default querystring parameters added to each request sent to humblebundle.com.
+    # default_params specifies the default querystring parameters added to each
+    # request sent to humblebundle.com.
     default_params = {"ajax": "true"}
 
-    def __init__(self, cookie_location="cookie.txt", auth_sess_cookie=""):
+    def __init__(self, auth_sess_cookie):
         """
-            Base constructor.  Responsible for setting up the requests object and cookie jar.
-            All configuration values should be set prior to constructing an object of this
-            type; changes to configuration will not take effect on variables which already
-            exist.
+            Base constructor.  Responsible for setting up the requests object
+            and cookie jar. All configuration values should be set prior to
+            constructing an object of this type; changes to configuration will
+            not take effect on variables which already exist.
         """
         self.session = requests.Session()
-        self.session.cookies = http.cookiejar.LWPCookieJar(cookie_location)
 
-        if auth_sess_cookie != "":
-            auth_sess_cookie = bytes(auth_sess_cookie, "utf-8").decode("unicode_escape")
-            cookie = http.cookiejar.Cookie(0, "_simpleauth_sess", auth_sess_cookie, None, None, "www.humblebundle.com", None, None, "/", None, True, None, False, None, None, None)
-            self.session.cookies.set_cookie(cookie)
-        try:
-            self.session.cookies.load()
-        except IOError:
-            # Cookie file doesn't exist.
-            pass
+        auth_sess_cookie = bytes(
+                auth_sess_cookie, "utf-8").decode("unicode_escape")
+        cookie = http.cookiejar.Cookie(
+                0, "_simpleauth_sess", auth_sess_cookie, None, None,
+                "www.humblebundle.com", None, None, "/", None, True,
+                None, False, None, None, None)
+        self.session.cookies.set_cookie(cookie)
 
         self.session.headers.update(self.default_headers)
         self.session.params.update(self.default_params)

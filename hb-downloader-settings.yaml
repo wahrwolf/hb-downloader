@@ -1,4 +1,3 @@
-cookie-filename: cookies.txt
 # For authentication, paste a session cookie from your browser here, in single quotes
 session-cookie: ''
 download-location: \\megatron\mila\Games\Humble Bundle\

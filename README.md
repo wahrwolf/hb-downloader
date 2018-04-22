@@ -61,12 +61,6 @@ writable by the user executing the script.  It can be a Linux style directory
 (`C:\Users\Username\Downloads`):
 
     download-location:  \\megatron\mila\games\humble bundle
-    
-`cookie-location` is where you want your session cookies stored after
-successful authentication with Humble Bundle. It should be writable by the
-script execution user; the default path is the script directory:
-
-    cookie-location: cookies.txt
 
 ## Issues
 If you encounter any issues or have suggestions, please [open an issue](https://github.com/MayeulC/hb-downloader/issues) on GitHub.
