@@ -27,7 +27,8 @@ Configuration.push_configuration()
 validation_status, message = Configuration.validate_configuration()
 if not validation_status:
     logger.display_message(False, "Error", message)
-    exit("Invalid configuration.  Please check your command line arguments and hb-downloader-settings.yaml.")
+    exit("Invalid configuration.  Please check your command line arguments and"
+         "hb-downloader-settings.yaml.")
 
 # Initialize the event handlers.
 EventHandler.initialize()
@@ -40,7 +41,8 @@ if not hapi.check_login():
 
 logger.display_message(False, "Processing", "Downloading order list.")
 game_keys = hapi.get_gamekeys()
-logger.display_message(False, "Processing", "%s orders found." % (len(game_keys)))
+logger.display_message(False, "Processing", "%s orders found." %
+                       (len(game_keys)))
 
 if ConfigData.action == "download":
     Action.batch_download(hapi, game_keys)

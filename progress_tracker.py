@@ -26,15 +26,23 @@ class ProgressTracker(object):
 
     @staticmethod
     def display_summary():
-        progress_message = "%d/%d DL: %s/%s (%s)" % (ProgressTracker.item_count_current,
-            ProgressTracker.item_count_total,
-            ProgressTracker.format_filesize(ProgressTracker.download_size_current),
-            ProgressTracker.format_filesize(ProgressTracker.download_size_total),
-            ProgressTracker.format_percentage(ProgressTracker.download_size_current,
-                                              ProgressTracker.download_size_total))
+        progress_message = "%d/%d DL: %s/%s (%s)" % (
+                ProgressTracker.item_count_current,
+                ProgressTracker.item_count_total,
+                ProgressTracker.format_filesize(
+                        ProgressTracker.download_size_current),
+                ProgressTracker.format_filesize(
+                        ProgressTracker.download_size_total),
+                ProgressTracker.format_percentage(
+                        ProgressTracker.download_size_current,
+                        ProgressTracker.download_size_total))
 
         logger.display_message(False, "Progress", progress_message)
-        logger.display_message(True, "Progress", "%s: %s: %s" % (ProgressTracker.current_product, ProgressTracker.current_subproduct, ProgressTracker.current_download))
+        logger.display_message(
+                True, "Progress", "%s: %s: %s" %
+                (ProgressTracker.current_product,
+                 ProgressTracker.current_subproduct,
+                 ProgressTracker.current_download))
 
     @staticmethod
     def reset():
