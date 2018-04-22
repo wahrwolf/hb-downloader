@@ -42,7 +42,7 @@ logger.display_message(False, "Processing", "Downloading order list.")
 game_keys = hapi.get_gamekeys()
 logger.display_message(False, "Processing", "%s orders found." % (len(game_keys)))
 
-if ConfigData.action is "download":
+if ConfigData.action == "download":
     Action.batch_download(hapi, game_keys)
 else:
     Action.list_downloads(hapi, game_keys)
