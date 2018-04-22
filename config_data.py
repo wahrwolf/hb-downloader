@@ -7,7 +7,8 @@ __license__ = "MIT"
 
 
 class ConfigData(object):
-    VERSION = 0.41
+    VERSION = "0.4.1"
+    BUG_REPORT_URL = "https://github.com/MayeulC/hb-downloader/issues"
     action = ""
     print_url = False
     download_location = ""

@@ -12,10 +12,10 @@ __copyright__ = "Copyright 2016 Brian Schkerke"
 __license__ = "MIT"
 
 
-print("The Clown's Humble Bundle Downloader v%.2f" % ConfigData.VERSION)
-print("")
-print("This downloader includes MIT licensed code from Joel Pedraza.")
-print("https://github.com/saik0/humblebundle-python")
+print("Humble Bundle Downloader v%s" % ConfigData.VERSION)
+print("This program is not affiliated nor endorsed by Humble Bundle, Inc.")
+print("For any suggestion or bug report, please create an issue at:\n%s" %
+      ConfigData.BUG_REPORT_URL)
 print("")
 
 # Load the configuration from the YAML file...
