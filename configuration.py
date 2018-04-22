@@ -142,10 +142,10 @@ class Configuration(object):
         if "print_url" not in dir(args):
             args.print_url = False
 
-        if args.platform is None:
-            args.platform = Configuration.cmdline_platform.get(args.item_type)
-
         if args.action is not None:
+            if args.platform is None:
+                args.platform = Configuration.cmdline_platform.get(
+                        args.item_type)
             for platform in ConfigData.download_platforms:
                 if args.platform is None:
                     ConfigData.download_platforms[platform] = True
