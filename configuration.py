@@ -97,13 +97,20 @@ class Configuration(object):
                 help=("Action to perform, optionally restricted to a few "
                       "specifiers. If no action is specified, the tool "
                       "defaults to downloading according to the configuration "
-                      "file."))
+                      "file. Please note that specifying an action WILL"
+                      "override the configuration file."))
 
         a_list = sub.add_parser("list", help=(
                 "Display library items in a tab-separated tree-like structure "
-                "that can be parsed as a CSV"))
+                "that can be parsed as a CSV."))
         a_download = sub.add_parser(
-                "download", help="download specific items from the library")
+                "download", help=(
+                        "Download specific items from the library instead of "
+                        "the ones specified in the configuration file. This "
+                        "is the default action, but specifying it will "
+                        "override the configuration file. If no further "
+                        "parameters are specified, this will default to "
+                        "downloading everything in the library."))
 
         for action in [a_list, a_download]:
             item_type = action.add_subparsers(title="type", dest="item_type")
