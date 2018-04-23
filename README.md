@@ -1,4 +1,7 @@
 # hb-downloader
+[![Coverage Status](https://coveralls.io/repos/github/MayeulC/hb-downloader/badge.svg)](https://coveralls.io/github/MayeulC/hb-downloader)
+[![Build Status](https://travis-ci.org/MayeulC/hb-downloader.svg)](https://travis-ci.org/MayeulC/hb-downloader)
+
 An automated utility to download your Humble Bundle purchases
 
     http://www.humblebundle.com
