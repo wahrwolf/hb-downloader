@@ -1,16 +1,18 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
 __license__ = "MIT"
 
 
 class ConfigData(object):
-    VERSION = 0.41
-    username = ""
-    password = ""
-    authy_token = ""
+    VERSION = "0.5.0"
+    BUG_REPORT_URL = "https://github.com/MayeulC/hb-downloader/issues"
+    action = ""
+    print_url = False
     download_location = ""
-    debug = True
-    cookie_filename = "cookies.txt"
+    debug = False
     auth_sess_cookie = ""
     write_md5 = True
     read_md5 = True

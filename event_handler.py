@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import sys
 import logger
 from humble_api.events import Events
@@ -12,7 +14,8 @@ class EventHandler(object):
     def initialize():
         Events.on(Events.EVENT_MD5_START, EventHandler.print_md5_start)
         Events.on(Events.EVENT_MD5_END, EventHandler.print_md5_end)
-        Events.on(Events.EVENT_DOWNLOAD_START, EventHandler.print_download_start)
+        Events.on(Events.EVENT_DOWNLOAD_START,
+                  EventHandler.print_download_start)
         Events.on(Events.EVENT_DOWNLOAD_END, EventHandler.print_download_end)
         Events.on(Events.EVENT_PROGRESS, EventHandler.print_progress)
 

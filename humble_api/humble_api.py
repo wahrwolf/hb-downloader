@@ -1,13 +1,10 @@
-
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import http.cookiejar
 import itertools
 from .model.order import Order
 import requests
 from .exceptions.humble_response_exception import HumbleResponseException
-from .exceptions.humble_authentication_exception import HumbleAuthenticationException
-from .exceptions.humble_captcha_exception import HumbleCaptchaException
-from .exceptions.humble_credential_exception import HumbleCredentialException
-from .exceptions.humble_two_factor_exception import HumbleTwoFactorException
 from .exceptions.humble_parse_exception import HumbleParseException
 
 __author__ = "Joel Pedraza"
@@ -41,28 +38,26 @@ class HumbleApi(object):
         "User-Agent": "Apache-HttpClient/UNAVAILABLE (java 1.4)"
     }
 
-    # default_params specifies the default querystring parameters added to each request sent to humblebundle.com.
+    # default_params specifies the default querystring parameters added to each
+    # request sent to humblebundle.com.
     default_params = {"ajax": "true"}
 
-    def __init__(self, cookie_location="cookie.txt", auth_sess_cookie=""):
+    def __init__(self, auth_sess_cookie):
         """
-            Base constructor.  Responsible for setting up the requests object and cookie jar.
-            All configuration values should be set prior to constructing an object of this
-            type; changes to configuration will not take effect on variables which already
-            exist.
+            Base constructor.  Responsible for setting up the requests object
+            and cookie jar. All configuration values should be set prior to
+            constructing an object of this type; changes to configuration will
+            not take effect on variables which already exist.
         """
         self.session = requests.Session()
-        self.session.cookies = http.cookiejar.LWPCookieJar(cookie_location)
 
-        if auth_sess_cookie != "":
-            auth_sess_cookie = bytes(auth_sess_cookie, "utf-8").decode("unicode_escape")
-            cookie = http.cookiejar.Cookie(0, "_simpleauth_sess", auth_sess_cookie, None, None, "www.humblebundle.com", None, None, "/", None, True, None, False, None, None, None)
-            self.session.cookies.set_cookie(cookie)
-        try:
-            self.session.cookies.load()
-        except IOError:
-            # Cookie file doesn't exist.
-            pass
+        auth_sess_cookie = bytes(
+                auth_sess_cookie, "utf-8").decode("unicode_escape")
+        cookie = http.cookiejar.Cookie(
+                0, "_simpleauth_sess", auth_sess_cookie, None, None,
+                "www.humblebundle.com", None, None, "/", None, True,
+                None, False, None, None, None)
+        self.session.cookies.set_cookie(cookie)
 
         self.session.headers.update(self.default_headers)
         self.session.params.update(self.default_params)
@@ -86,66 +81,6 @@ class HumbleApi(object):
                 return False
         except HumbleAuthenticationException:
             return False
-
-    def login(self, username, password, authy_token, *args, **kwargs):
-        """
-            Login to the Humble Bundle API.
-
-            The response sets the _simpleauth_sess cookie which is stored in the session
-            automatically.
-
-            :param str username:  The username to use when logging into humblebundle.com.
-            :param str password:  The password to use when logging into humblebundle.com.
-            :param str authy_token:  The Authy token to use when logging into humblebundle.com.
-            :param list args: (optional) Extra positional args to pass to the request
-            :param dict kwargs: (optional) Extra keyword args to pass to the request. If a data dict is supplied a key
-                                collision with any of the above params will resolved in favor of the supplied param
-            :raises RequestException: if the connection failed
-            :raises HumbleResponseException: if the response was invalid
-            :raises HumbleCredentialException: if the username and password did not match
-            :raises HumbleCaptchaException: if the captcha challenge failed
-            :raises HumbleTwoFactorException: if the two-factor authentication challenge failed
-            :raises HumbleAuthenticationException: if some other authentication error occurred
-        """
-        default_data = {
-            "username": username,
-            "password": password,
-            "authy-token": authy_token
-        }
-
-        kwargs.setdefault("data", {}).update({k: v for k, v in list(default_data.items()) if v is not None})
-
-        response = self._request("POST", self.LOGIN_URL, *args, **kwargs)
-        data = self.__parse_data(response)
-        success = data.get("success", None)
-
-        if success is True:
-            self.session.cookies.save()
-            return True
-
-        authy_required = data.get("authy_required")
-        errors, error_msg = self.__get_errors(data)
-        request = response.request
-
-        if errors:
-            captcha = errors.get("captcha")
-            username = errors.get("username")
-            authy_token = errors.get("authy-token")
-
-            if captcha:
-                raise HumbleCaptchaException(
-                    error_msg, request=request, response=response, authy_required=authy_required)
-
-            if username:
-                raise HumbleCredentialException(
-                    error_msg, request=request, response=response, authy_required=authy_required)
-
-            if authy_token:
-                raise HumbleTwoFactorException(
-                    error_msg, request=request, response=response, authy_required=authy_required)
-
-        raise HumbleAuthenticationException(
-            error_msg, request=request, response=response, uthy_required=authy_required)
 
     def get_gamekeys(self, *args, **kwargs):
         """
