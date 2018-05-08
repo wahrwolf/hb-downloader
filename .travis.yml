@@ -3,7 +3,7 @@ python: "3.6"
 install:
   - pip install requests pyyaml pytest-cov python-coveralls
 script:
-  - py.test --cov=.
+  - python3 -m pytest --cov=.
 after_success:
   - coveralls
 notifications:
