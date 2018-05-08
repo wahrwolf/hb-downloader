@@ -15,8 +15,8 @@ __license__ = "MIT"
 class Configuration(object):
     cmdline_platform = {  # Mapping between hb convention and ours
             'games': ['android', 'asmjs', 'linux', 'mac', 'windows'],
-            'ebooks': 'ebook',
-            'audio': 'audio'}
+            'ebooks': ['ebook'],
+            'audio': ['audio']}
 
     @staticmethod
     def validate_configuration():
