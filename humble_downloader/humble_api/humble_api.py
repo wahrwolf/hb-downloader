@@ -29,6 +29,7 @@ class HumbleApi(object):
     LOGIN_URL = "https://www.humblebundle.com/processlogin"
     ORDER_LIST_URL = "https://www.humblebundle.com/api/v1/user/order"
     ORDER_URL = "https://www.humblebundle.com/api/v1/order/{order_id}"
+    TROVE_SIGN_URL= "https://www.humblebundle.com/api/v1/user/download/sign"
 
     # default_headers specifies the default HTTP headers added to each request sent to the humblebundle.com servers.
     default_headers = {
@@ -82,6 +83,24 @@ class HumbleApi(object):
                 return False
         except HumbleAuthenticationException:
             return False
+
+    def get_trove_item(self, machine_name, filename):
+        """
+            parameters: machine name, filename
+            TODO: actual product struct
+
+            :return: dict with signed_torrent_url and signed_url
+        """
+        try:
+            parameters= {"machine_name": machine_name, "filename": filename}
+            response = self._request("POST", HumbleApi.TROVE_SIGN_URL, data=parameters)
+            data = self.__parse_data(response)
+
+        except HumbleAuthenticationException:
+            return False
+
+        if self.__authenticated_response_helper(response, data):
+            return data  # TODO Product(data) qould be better
 
     def get_gamekeys(self, *args, **kwargs):
         """
