@@ -13,6 +13,9 @@ class Action:
     @staticmethod
     def list_downloads(hapi, game_keys):
         for key in game_keys:
+            if ConfigData.download_platforms.get("humble-keys", False):
+                print("%s" % key)
+                continue
             selector_matched_key_once = False
             current_order = hapi.get_order(key)
 

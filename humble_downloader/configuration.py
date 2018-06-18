@@ -115,12 +115,15 @@ class Configuration(object):
 
         for action in [a_list, a_download]:
             item_type = action.add_subparsers(title="type", dest="item_type")
-            games = item_type.add_parser("games")
+            games = item_type.add_parser("games", help="Only list games")
             games.add_argument(
                     "--platform", nargs='+', choices=[  # TODO: add NATIVE?
                             "linux", "mac", "windows", "android", "asmjs"])
-            item_type.add_parser("ebooks")
-            item_type.add_parser("audio")
+            item_type.add_parser("ebooks", help="Only list ebooks")
+            item_type.add_parser("audio", help="Only display audio products")
+            item_type.add_parser("humble-keys", help=(
+                        "Only list humble bundle keys that identify each "
+                        "purchase"))
 
         a_list.add_argument(
                 "-u", "--print-url", action="store_true", dest="print_url",
@@ -155,6 +158,10 @@ class Configuration(object):
                     ConfigData.download_platforms[platform] = True
                 else:
                     ConfigData.download_platforms[platform] = False
+            # "fake platforms" can be defined to list info like humble keys
+            # TODO: only allow them for listing?
+            if args.item_type not in ConfigData.download_platforms:
+                ConfigData.download_platforms[args.item_type] = True
         else:
             args.action = "download"
         ConfigData.action = args.action
