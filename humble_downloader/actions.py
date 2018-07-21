@@ -18,6 +18,8 @@ class Action:
                 continue
             selector_matched_key_once = False
             current_order = hapi.get_order(key)
+            if 'subproducts' not in current_order:
+                continue
 
             for current_subproduct in current_order.subproducts or []:
                 selector_matched_subproduct_once = False

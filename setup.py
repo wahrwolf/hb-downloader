@@ -9,6 +9,7 @@ from setuptools import setup, find_packages
 def read(file_name):
     return open(os.path.join(os.path.dirname(__file__), file_name)).read()
 
+
 setup(
     name="humble_downloader",  # your package name (i.e. for import)
     version="0.5.0",
@@ -24,6 +25,7 @@ setup(
     install_requires=[
         'requests',
         'pyyaml',
+        'lxml'
     ],
     long_description=read('README.md'),
     classifiers=[
