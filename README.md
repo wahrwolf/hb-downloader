@@ -23,6 +23,7 @@ library, available at https://github.com/saik0/humblebundle-python
 * Python 3.6
 * requests library
 * pyyaml library
+* (optionnally for Humble Trove support) lxml
 
 ## Python Installation
 Several features particular to Python v3.6 might have been used during the
@@ -32,11 +33,12 @@ https://www.python.org/downloads/ and grab the latest 3.x.x release.
 ## Getting the Prerequisites
 From a command prompt, enter:
 
-    pip install requests
-    pip install pyyaml
+    pip install requests pyyaml lxml
 
 You'll either be informed that the requirement is already satisfied, or pip
 will retrieve, install, and configure the libraries for you.
+
+Alternatively, you can run the `setup.py` script.
 
 ## Getting the Installation Files
 Perform one of the following actions:
