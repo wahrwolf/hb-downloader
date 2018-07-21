@@ -180,7 +180,8 @@ s             errors.
         # Response had no success or errors fields, it's probably data
         return True
 
-    def __parse_data(self, response):
+    @staticmethod
+    def __parse_data(response):
         """
             Try and parse the response data as JSON.  If parsing fails, throw a HumbleParseException.
 
@@ -194,7 +195,8 @@ s             errors.
         except ValueError as e:
             raise HumbleParseException("Invalid JSON: %s", str(e), request=response.request, response=response)
 
-    def __get_errors(self, data):
+    @staticmethod
+    def __get_errors(data):
         """
             Retrieves any errors defined within the JSON and returns them as a string.
 
