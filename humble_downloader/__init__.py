@@ -13,6 +13,8 @@ __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
 __license__ = "MIT"
 
+__all__ = ["ConfigData", "Action", "display_message", "HumbleDownload", "ProgressTracker"]
+
 
 def main():
     print("Humble Bundle Downloader v%s" % ConfigData.VERSION)
