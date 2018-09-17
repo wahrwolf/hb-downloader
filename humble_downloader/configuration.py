@@ -121,9 +121,10 @@ class Configuration(object):
                             "linux", "mac", "windows", "android", "asmjs"])
             item_type.add_parser("ebooks", help="Only list ebooks")
             item_type.add_parser("audio", help="Only display audio products")
-            item_type.add_parser("humble-keys", help=(
-                        "Only list humble bundle keys that identify each "
-                        "purchase"))
+            if action is a_list:
+                item_type.add_parser("humble-keys", help=(
+                    "Only list humble bundle keys that identify each "
+                    "purchase"))
 
         a_list.add_argument(
                 "-u", "--print-url", action="store_true", dest="print_url",
