@@ -47,7 +47,7 @@ class TroveOrder(Order):
                 pp['machine_name'] = p.attrib['data-machine-name']
                 signed = hapi.get_signed_trove_url(pp['machine_name'], pp['download_identifier'])
                 pp['download_struct'] = [{
-                    'url_dictionary': {
+                    'url': {
                         'web': signed.get('signed_url', None),
                         'bittorrent': signed.get('signed_torrent_url', None)
                     }
