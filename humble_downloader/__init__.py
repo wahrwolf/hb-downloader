@@ -43,7 +43,10 @@ def main():
                  "  Please verify your authentication cookie")
 
     logger.display_message(False, "Processing", "Downloading order list.")
-    game_keys = hapi.get_gamekeys()
+    if ConfigData.restrict_keys:
+        game_keys = ConfigData.restrict_keys
+    else:
+        game_keys = hapi.get_gamekeys()
     logger.display_message(False, "Processing", "%s orders found." %
                            (len(game_keys)))
 

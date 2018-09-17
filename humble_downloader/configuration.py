@@ -7,6 +7,7 @@ import yaml
 from . import logger
 from .config_data import ConfigData
 from .humble_api.humble_hash import HumbleHash
+from .humble_api.humble_api import HumbleApi
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
@@ -113,6 +114,11 @@ class Configuration(object):
                         "parameters are specified, this will default to "
                         "downloading everything in the library."))
 
+        a_list.add_argument(
+                "-u", "--print-url", action="store_true", dest="print_url",
+                help=("Print the download url with the output. Please note "
+                      "that the url expires after a while"))
+
         for action in [a_list, a_download]:
             item_type = action.add_subparsers(title="type", dest="item_type")
             games = item_type.add_parser("games", help="Only list games")
@@ -125,11 +131,10 @@ class Configuration(object):
                 item_type.add_parser("humble-keys", help=(
                     "Only list humble bundle keys that identify each "
                     "purchase"))
+            action.add_argument("-k", "--keys", nargs="+", help=(
+                "Only consider listed game key(s). Humble trove games are "
+                'considered a special "' + HumbleApi.TROVE_GAMEKEY + '" key'))
 
-        a_list.add_argument(
-                "-u", "--print-url", action="store_true", dest="print_url",
-                help=("Print the download url with the output. Please note "
-                      "that the url expires after a while"))
         args = parser.parse_args()
 
         Configuration.configure_action(args)
@@ -165,7 +170,9 @@ class Configuration(object):
                 ConfigData.download_platforms[args.item_type] = True
         else:
             args.action = "download"
+
         ConfigData.action = args.action
+        ConfigData.restrict_keys = args.keys
         ConfigData.print_url = args.print_url
 
     @staticmethod
