@@ -71,7 +71,7 @@ class Action:
                                                                         key)
             item_count_total += len(humble_downloads)
             download_size_total += sum(
-                    dl.humble_file_size for dl in humble_downloads)
+                    dl.humble_file_size or 0 for dl in humble_downloads)
             logger.display_message(False, "Processing",
                                    "Added %d downloads for order %s"
                                    % (len(humble_downloads), key))
