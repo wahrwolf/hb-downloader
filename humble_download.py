@@ -98,8 +98,8 @@ class HumbleDownload(object):
             :return:  None
         """
         if os.path.exists(self.full_filename):
-            os.remove(self.full_filename)
             HumbleHash.remove_md5file(self.full_filename)
+            os.remove(self.full_filename)
 
     def check_status(self):
         """
