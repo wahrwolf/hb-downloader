@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import logger
-from config_data import ConfigData
-from configuration import Configuration
-from event_handler import EventHandler
-from humble_api.humble_api import HumbleApi
-from actions import Action
+import hb_downloader.logger as logger
+from hb_downloader.config_data import ConfigData
+from hb_downloader.configuration import Configuration
+from hb_downloader.event_handler import EventHandler
+from hb_downloader.humble_api.humble_api import HumbleApi
+from hb_downloader.actions import Action
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"
