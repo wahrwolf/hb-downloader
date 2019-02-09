@@ -3,9 +3,9 @@
 import argparse
 import os
 import yaml
-import logger
-from config_data import ConfigData
-from humble_api.humble_hash import HumbleHash
+from hb_downloader import logger
+from hb_downloader.config_data import ConfigData
+from hb_downloader.humble_api.humble_hash import HumbleHash
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"

@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 import os
 import requests
-from config_data import ConfigData
-from humble_api.events import Events
-from humble_api.humble_hash import HumbleHash
+from hb_downloader.config_data import ConfigData
+from hb_downloader.humble_api.events import Events
+from hb_downloader.humble_api.humble_hash import HumbleHash
 
 __author__ = "Brian Schkerke"
 __copyright__ = "Copyright 2016 Brian Schkerke"

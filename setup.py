@@ -7,4 +7,6 @@ setup(name='hb_downloader',
       author='Brian Schkerke',
       license='MIT',
       packages=['hb_downloader'],
+      test_suite='nose.collector',
+      tests_require=['nose'],
       zip_safe=False)

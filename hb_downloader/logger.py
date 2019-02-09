@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-from config_data import ConfigData
+from hb_downloader.config_data import ConfigData
 import time
 import sys
 
