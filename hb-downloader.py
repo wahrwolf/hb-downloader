@@ -19,10 +19,13 @@ print("For any suggestion or bug report, please create an issue at:\n%s" %
 print("")
 
 # Load the configuration from the YAML file...
-Configuration.load_configuration("hb-downloader-settings.yaml")
-Configuration.parse_command_line()
-Configuration.dump_configuration()
-Configuration.push_configuration()
+try:
+    Configuration.load_configuration("/etc/hb_downloader.yaml")
+    Configuration.parse_command_line()
+    Configuration.dump_configuration()
+    Configuration.push_configuration()
+except FileNotFoundError:
+    print("Configuration File not found!")
 
 validation_status, message = Configuration.validate_configuration()
 if not validation_status:
